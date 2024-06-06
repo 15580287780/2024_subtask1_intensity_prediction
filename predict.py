@@ -44,9 +44,7 @@ def test_model(model, test_data, output_file, batch_size=1):
                 valence_predictions.append(valence_predict.item())
                 arousal_predictions.append(arousal_predict.item())
 
-            # 初始化一个空字符串用于存储所有方面的结果
             all_aspects_str = []
-            # 格式化输出字符串
             for aspect, valence, arousal in zip(aspects, valence_predictions, arousal_predictions):
                 aspect, = aspect
                 aspect_str = f'({aspect},{valence:.2f}#{arousal:.2f})'
@@ -56,7 +54,6 @@ def test_model(model, test_data, output_file, batch_size=1):
             file.write(line)
 
 
-# 加载数据
 def load_data_from_file(file_path, train):
     data = []
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -76,21 +73,14 @@ def load_data_from_file(file_path, train):
     return data
 
 
-# 设置全局随机种子
 random_seed = 0
 set_seed(random_seed)
-# 准备数据
-print('加载数据')
+
 # test_data = load_data_from_file('data/SIGHAN2024_dimABSA_Validation_Task1_Simplified.txt', train=False)
 test_data = load_data_from_file('data/SIGHAN2024_dimABSA_Testing_Task1_Traditional.txt', train=False)
 
-# 创建模型
-print('创建模型')
 model = torch.load('./model/best_chinese-bert-wwm-ext2.pth')
 
-
-# 测试模型
-print('模型测试')
 # output_file = "task1s.txt"
 output_file = "task1t.txt"
 test_model(model, test_data, output_file)
